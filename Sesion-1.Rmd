@@ -81,6 +81,67 @@ result_vector = x_vector + y_vector
 result_vector
 ```
 Vector Selection
+Seleccionar elementos de un vector
+```{r}
+poker_vector
+poker_vector[3] #las posiciones inician desde 1
+poker_vector[c(2,3,4)]#Si quiero un segmento o grupo puedo hacerlo por medio de una selección.
+poker_vector[2:5] #por rango, inicio a un final se coloca el rango entre dos puntos
+
+
+```
+Matrix
+Tiene mas de una dimensión
+```{r}
+matrix(1:9, byrow = TRUE, nrow = 3)#se crea una matriz llenando del 1 al 9 (1:9), byrow indica que se empezara a llenar por filas, nrow indica cuantas filas tendrá la matriz.
+matrix(1:9, nrow = 3)
+
+```
+Analyze matrices
+```{r}
+new_hope = c(460.998, 314.4)
+empire_strikes = c(290.475, 247.900)
+return_jedi = c(309.306, 165.8)
+box_office = c(new_hope, empire_strikes, return_jedi)
+box_office
+stars_wars_matrix = matrix(box_office, byrow = TRUE, nrow = 3)
+stars_wars_matrix
+```
+Naming a matrix (nombrado a matrices)
+```{r}
+region = c("USA", "non-USA")
+titles = c("A new hope", "The empire strikes back", "Return of the jedi")
+colnames(stars_wars_matrix) <- region
+rownames(stars_wars_matrix) <- titles
+stars_wars_matrix
+```
+rowSums() Toma los valores de una fila dentro de una matrix y los suma
+```{r}
+rowSums(stars_wars_matrix)
+```
+colSums() Toma los valores de una columna dentro de una matrix y los suma
+```{r}
+colSums(stars_wars_matrix)
+```
+cbind() and rbind() 
+cbind agregar una columna más a la matrix, y rbind agrega una fila.
+```{r}
+total_revenue_by_tittle = rowSums(stars_wars_matrix)
+total_revenue_by_region = colSums(stars_wars_matrix)
+total = cbind(stars_wars_matrix, total_revenue_by_tittle)
+total = rbind(total, total_revenue_by_region)
+total
+```
+Selection of matrix elements
+```{r}
+stars_wars_matrix
+stars_wars_matrix[1,2]
+stars_wars_matrix[1:2, 2] #elije por rangos
+```
+
+
+
+
 
 
 

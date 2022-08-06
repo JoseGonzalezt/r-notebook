@@ -1,0 +1,99 @@
+Arithmetic with R
+```{r}
+5 + 5
+10 - 2
+5 + 5 - 3
+3 * 5
+7/2
+(5*5)/2 
+28%%6 #para calcular el modulo
+```
+Variable assignment
+Es un contenedor para almacenar datos, tiene un nombre.
+```{r}
+x = 10
+x
+y <- 12
+y
+z = 2
+#Se puede utilizar el = o <- para asignar los valores a una variable
+x + y - z
+result <- x + y - z 
+result
+```
+Basic Data types in R
+```{r}
+#valors enteros, decimales, booleanos (true o false) y texto (string, comilla simple o apóstrofo)
+my_numeric <- 423
+my_numericDec <- 3.4
+my_character <- "universe"
+my_logical <- FALSE
+class(my_numeric) #Devuelte el tipo de dato que contine la variable
+class(my_character)
+class(my_logical)
+class(x)
+```
+Vectors
+c(), c es de colection es una palabra reservada
+```{r}
+numeric_vector <- c(1, 10, 48)
+numeric_vector
+character_vector <- c("a", "b", "c")
+character_vector
+
+poker_vector <- c(140, -50, -20, -120, 240)
+roulette_vector <- c(-24, -50, 10, 350, 10)
+
+poker_vector
+roulette_vector
+
+```
+Naming a vector
+```{r}
+names(poker_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday") #funcion predeterminada como el class, entre los parentesis se coloca el nombre del vector a nombrar, los valors que tendran asignados cada uno de los valores dentro del vector
+poker_vector
+names(roulette_vector) <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+roulette_vector
+#Se podría crear un vector de los días para el ejemplo y luego utilizar la funcion names
+days = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+names(poker_vector) = days
+poker_vector
+```
+Selection by comparison
+```{r}
+age = 17
+age <= 18
+age < 10
+age >= 3
+age > 16
+
+selection_vector <- poker_vector > 0
+selection_vector
+
+poker_winning_days = poker_vector[selection_vector] #devuelve a solo lo que sea verdadero
+poker_winning_days
+```
+Calculating
+```{r}
+x_vector = c(4, 7, 9)
+y_vector = c(12, 45, 78)
+result_vector = x_vector + y_vector
+result_vector
+```
+Vector Selection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

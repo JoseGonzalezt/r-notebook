@@ -111,8 +111,8 @@ Naming a matrix (nombrado a matrices)
 ```{r}
 region = c("USA", "non-USA")
 titles = c("A new hope", "The empire strikes back", "Return of the jedi")
-colnames(stars_wars_matrix) <- region
-rownames(stars_wars_matrix) <- titles
+colnames(stars_wars_matrix) <- region #asigna nombre a las columnas de la matriz
+rownames(stars_wars_matrix) <- titles #asigna nombre a las filas de la matriz
 stars_wars_matrix
 ```
 rowSums() Toma los valores de una fila dentro de una matrix y los suma
@@ -135,10 +135,10 @@ total
 Selection of matrix elements
 ```{r}
 stars_wars_matrix
-stars_wars_matrix[1,2]
+stars_wars_matrix[1,2] #Elije un dato puntual de la matrix, fila 1 col 2
 stars_wars_matrix[1:2, 2] #elije por rangos
 ```
-
+123
 
 
 

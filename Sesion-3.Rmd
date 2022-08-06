@@ -1,18 +1,153 @@
----
-title: "R Notebook"
-output: html_notebook
----
-
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+Equality
 
 ```{r}
-plot(cars)
+"Rchitect" != "rchitect"
+TRUE == FALSE
+-6 * 14 != 17 - 101
+TRUE == 1
+
+-6 * 5 + 2 >= -10 + 1
+"raining" <= "raining dogs"
+TRUE < FALSE
+
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+Compare vectors
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+```{r}
+linkedin <- c(16,9,13,5,2,17,14)
+facebook <- c(17,9,16,5,2,13,14)
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+linkedin > 15
+facebook <= 5
+
+linkedin > facebook
+```
+Compare matrices
+
+```{r}
+views <- matrix(c(linkedin,facebook), nrow=2, byrow = TRUE)
+views
+
+views == 13
+
+views <= 14
+```
+& and |
+
+```{r}
+linkedin
+last <- tail(linkedin,1)
+
+last > 5 | last < 10
+last > 15 & last <= 20
+
+linkedin > 10 & facebook < 10
+linkedin >= 12 | facebook >= 12
+```
+The if statement
+
+```{r}
+medium <- "Facebook"
+num_views <- 14
+
+if(medium == "Linkedin"){
+  print("Showing Linkedin information")
+} else if (medium == "Facebook") {
+  print("Showing Facebook information")
+} else {
+  print("Unknown medium")
+}
+
+if(num_views > 15){
+  print("You are popular!")
+} else if (num_views <= 15 & num_views > 10) {
+  print("Your number of views is average")
+} else {
+  print("Try to be more visible")
+}
+  
+```
+```{r}
+result <- ""
+number <- 101
+
+if (number < 10){
+  if(number < 5){
+    result <- "extra small"
+  }
+  else {
+    result <- "small"
+  }
+} else if (number < 100){
+  result <- "medium"
+} else {
+  result <- "large"
+}
+
+print(result)
+
+```
+Write a while loop
+
+```{r}
+
+speed <- 64
+
+while (speed > 30){
+  print("Slow down!")
+  speed <- speed - 7
+}
+
+speed
+
+```
+```{r}
+while (speed > 30){
+  print(paste("Your speed is",speed))
+  if(speed >= 48){
+    print("Slow down big time!")
+    speed <- speed - 11
+  } else {
+    print("Slow down!")
+    speed <- speed - 6
+  }
+}
+
+speed
+```
+Stop the while loop: break
+
+```{r}
+
+speed <- 75
+
+while (speed > 30){
+  print(paste("Your speed is", speed))
+  
+  if (speed > 80){
+    break
+  }
+  
+  if(speed > 48){
+    print("Slow down big time!")
+    speed <- speed -11
+  } else {
+    print("Slow down!")
+    speed <- speed - 6
+  }
+}
+```
+Build a while loop from scratch
+
+```{r}
+i <- 1
+
+while (i <= 10){
+  print(3*i)
+  if((i*3) %% 8 == 0){
+    break
+  }
+  i <- i + 1
+}
+```

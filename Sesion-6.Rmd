@@ -2,6 +2,7 @@ GROUP AND SUMMARIZING
 
 Summarizing the median life expectancy
 ```{r}
+library(gapminder)
 gapminder %>% 
   summarize(medianLifeExp = median(lifeExp)) #Calcula la mediana del set de datos
 #Filter for 1957 then summarize the median life expectancy
@@ -72,4 +73,210 @@ oceania_1952
 ggplot(oceania_1952, aes(x=country, y=gdpPercap)) +
   geom_col()
 ```
+HISTOGRAMS
+Ver el nivel de frecuencia de una variable.
+```{r}
+library(gapminder)
+library(ggplot2)
+library(dplyr)
+gapminder
+gapminder_1952 <- gapminder %>% 
+  filter(year == 1952)
+  filter (gapminder_1952, year==1952)
+  mutate(gapminder_1952,  pop_by_mil = pop / 1000000)
+  gapminder_1952
+ggplot(gapminder_1952, aes(x=pop_by_mil))+
+  geom_histogram(bins = 50)
+```
+VISUALIZING POPULATION WIT x-axis on a log scale
+Se realiza una gráfica con escala logaritmica, se observa que va tomando una forma de distribución normal.
+
+```{r}
+gapminder_1952 <- gapminder %>% 
+  filter(year == 1952)
+ggplot(gapminder_1952, aes(x=pop))+
+  geom_histogram(bins = 50) +
+  scale_x_log10()
+```
+BOXPLOTS
+Es una caja que esta configurada por un extremo inferior y uno superior, en el inferior se tiene el primer percentil, y en el superior un 75% y al centro el promedio.
+
+La franja en negrilla, es el promedio de los datos. El superior el 75% de los datos, y la linea que continua es el resto de los datos, se le conoce como bigotes, la linea inferior es el 25%, y la cola son los datos previos al 25%.
+
+```{r}
+#comparing GDP per capita across continents
+gapminder_1952 <- gapminder %>% 
+  filter(year == 1952)
+gapminder_1952
+filter(gapminder_1952, continent == "America")
+ggplot(gapminder_1952, aes(x=continent, y=gdpPercap))+
+  geom_boxplot() +
+  scale_y_log10()
+  
+```
+ADDING A TITLE TO YOUR GRAPH
+```{r}
+ggplot(gapminder_1952, aes(x=continent, y=gdpPercap))+
+  geom_boxplot() +
+  scale_y_log10() +
+  ggtitle("Comparing GDP per capita across continents")
+```
+########################DATA MANIPULATION WITH dplyr##############################
+TRANSFORMING DATA WITH dplyr
+Select, mutate, filter, and arrange
+```{r}
+#install.packages("tidyverse")
+library(readr)
+library(tidyverse)
+library(dplyr)
+counties <- read.csv("counties.csv")
+glimpse(counties) #una vista previa como estan los datos.
+counties
+```
+SELECT(), Selecciona columnas que se necesitan
+ARRANGE(), Permite ordenar ascendente o descendente los datos.
+Filter(), Filtra los datos deacuerdo a una condición.
+```{r}
+counties %>% 
+  select(state, county, population, men, women)
+counties_selected <- counties %>% 
+  select(state, county, population, private_work, public_work, self_employed)
+counties_selected %>% 
+  arrange(desc(public_work)) # por definición ordena ascendente, para desencente, se le agrega el desc()
+counties_selected <- counties %>% 
+  select(state, county, population)
+counties_selected %>% 
+  filter(population > 1000000)
+
+counties_selected <- counties %>% 
+  select(state, county, population, private_work, public_work, self_employed)
+counties_selected %>% 
+  filter(state== "Texas", population < 10000) %>% 
+  arrange(desc(private_work))
+```
+Select, mutate, filter and arrange
+```{r}
+counties %>% 
+  select(state, county, population, men, women) %>% 
+  mutate(propotion_men = men/population) %>% 
+  filter(population > 10000) %>% 
+  arrange(desc(propotion_men))
+```
+AGGREGATIN DATA
+```{r}
+counties_selected <- counties %>% 
+  select(county, region, state, population, citizens)
+
+counties_selected %>% 
+  count(region, sort = TRUE) %>% 
+  arrange(n)
+```
+Counting citizens by state
+```{r}
+selected_counties <- counties %>% 
+  select(county, region, state, population, citizens)
+
+selected_counties %>% 
+  count(state, wt = citizens) %>%  #agrupa por state, pero el conteo que realizará sera por citizens, para esto se utiliza el parámetro wt.
+  arrange(desc(n))
+```
+ MUTATING AND COUNT
+```{r}
+selected_counties <- counties %>% 
+  select(county, region, state, population, walk)
+
+selected_counties %>% 
+  mutate(population_walk = population*walk/100) %>% 
+  count(state, wt = population_walk, sort = TRUE)
+
+```
+The group by, summarize and ungroup verbs
+
+Summarizing
+```{r}
+selected_counties <- counties %>% 
+  select(county, population, income, unemployment)
+
+selected_counties %>% 
+  summarize(min_population=min(population), max_unemployment=max(unemployment), averange_income =mean(income))
+
+
+```
+Summarizing by state
+```{r}
+selected_counties <- counties %>% 
+  select(state, county, population, land_area)
+
+selected_counties %>% 
+  group_by(state) %>% 
+  summarize(total_area=sum(land_area), total_population=sum(population)) %>% 
+  mutate(density=total_population/total_area) %>% 
+  arrange(desc(density))
+
+```
+```{r}
+selected_counties <- counties %>% 
+  select(region, state, county, population)
+
+selected_counties %>% 
+  group_by(region, state) %>% 
+  summarize(total_pop=sum(population)) %>% 
+  summarize(average_pop=mean(total_pop), median_pop=median(total_pop))
+```
+Top_n verb
+```{r}
+selected_counties <- counties %>% 
+  select(region, state, county, metro, population, walk)
+
+selected_counties %>% 
+  group_by(region) %>% 
+  top_n(1, walk)
+
+
+selected_counties <- counties %>% 
+  select(region, state, county, population, income)
+
+selected_counties %>% 
+  group_by(region, state) %>% 
+  summarize(average_income=mean(income)) %>% #resumen
+  top_n(1, average_income)
+  
+```
+Using group_by, summarize, top_n, ungrouup and count together.
+```{r}
+selected_counties <- counties %>% 
+  select(state, metro, population)
+
+selected_counties %>% 
+  group_by(state, metro) %>% 
+  summarize(total_pop=sum(population)) %>% 
+  top_n(1, total_pop) %>%  #trae los que tienen mayor peso
+  ungroup() %>% 
+  count(metro)
+```
+SELECTING, seleccionando un rango de columnas de  un dataset
+```{r}
+counties %>% 
+  select(state, county, population, professional:production) %>% 
+  arrange(desc(service))
+
+counties %>% 
+  select(state, county, population, ends_with("work")) %>%  #cumple con la contidición que la columna tenga al final de su nombre la palabra work
+  filter(public_work >= 50) 
+
+```
+**Slect helpers
+starts_with()
+ends_with()
+contains()
+```{r}
+counties %>% 
+  select(state, county, population, starts_with("income")) %>%
+  
+counties %>% 
+  select(state, county, population, countains("state")) %>%
+
+```
+
+
 

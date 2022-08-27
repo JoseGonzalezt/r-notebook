@@ -1,0 +1,111 @@
+SESION 7
+INNER_JOIN, sirve para unir tablar.
+```{r}
+library(tidyverse)
+library(readr)
+library(dplyr)
+sets <- read_csv('sets.csv')
+themes <- read_csv('themes.csv')
+parts <- read_csv('parts.csv')
+part_categories <- read_csv('part_categories.csv')
+inventory_parts <- read_csv('inventory_parts.csv')
+inventories <- read_csv('inventories.csv')
+colors <- read_csv('colors.csv')
+
+parts
+part_categories
+```
+Joining parts and categories
+```{r}
+parts %>% 
+  inner_join(part_categories, by=c("part_cat_id"="id")) #une los data set parts y part-categories por medio de las columnas part_cat_id e id, se elimina id y solo queda part_cat_id, tienen nombres diferentes.
+```
+```{r}
+parts
+inventory_parts
+
+parts %>% 
+  inner_join(inventory_parts, by="part_num")#las columnas se llaman igual, por lo que se utiliza de esta forma
+
+inventory_parts %>% 
+  inner_join(parts, by="part_num") #no cambia la cantidad de datos si se pone de la otra forma.
+```
+Joining three tables
+```{r}
+sets
+inventories
+
+sets %>% 
+  inner_join(inventories, by="set_num") %>% 
+  inner_join(inventory_parts, by=c("id" = "inventory_id"))
+```
+Joining more three tables
+```{r}
+sets
+inventories
+colors
+
+sets %>% 
+  inner_join(inventories, by="set_num") %>% 
+  inner_join(inventory_parts, by=c("id" = "inventory_id")) %>% 
+  inner_join(colors, by=c("color_id"="id"), suffix=c("_set","_Color"))
+```
+What´s the most common color?
+```{r}
+sets %>% 
+  inner_join(inventories, by="set_num") %>% 
+  inner_join(inventory_parts, by=c("id" = "inventory_id")) %>% 
+  inner_join(colors, by=c("color_id"="id"), suffix=c("_set","_Color")) %>% 
+  count(name_Color) %>%
+  arrange(desc(n))
+  
+
+```
+Left and Right Joins
+```{r}
+inventory_parts_joined <- sets %>% 
+  inner_join(inventories, by="set_num") %>% 
+  inner_join(inventory_parts, by=c("id" = "inventory_id")) %>% 
+  inner_join(colors, by=c("color_id"="id"), suffix=c("_set","_Color")) %>% 
+  select(set_num, part_num, color_id, quantity)
+inventory_parts_joined
+
+millenium_falcon <- inventory_parts_joined %>% 
+  filter(set_num == "7965-1")
+star_destroyer <- inventory_parts_joined %>% 
+  filter(set_num == "75190-1")
+
+millenium_falcon %>% 
+  left_join(star_destroyer, by=c("part_num", "color_id"), suffix=c("_falcon","_star_destroyer"))
+```
+Left joinin two sets by color
+```{r}
+millenium_falcon_color <- millenium_falcon %>% 
+  group_by(color_id) %>% 
+  summarize(total_quantity = sum(quantity))
+
+star_destroyer_color <- star_destroyer %>% 
+  group_by(color_id) %>% 
+  summarize(total_quantity = sum(quantity))
+
+millenium_falcon_color %>% 
+  left_join(star_destroyer_color, by="color_id", suffix=c("_falcon", "_star_destroyer"))
+
+```
+```{r}
+inventory_version_1 <- inventories %>% 
+  filter(version == 1)  
+
+sets %>% 
+  left_join(inventory_version_1, by="set_num") %>% 
+  filter(is.na(version))#40198-1 esta en sets pero no en inventory_version_1
+  
+```
+Right Join
+```{r}
+parts %>% 
+  count(part_cat_id) %>% 
+  right_join(part_categories, by=c("part_cat_id" = "id"))
+
+```
+

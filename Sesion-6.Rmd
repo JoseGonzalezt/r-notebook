@@ -274,9 +274,87 @@ counties %>%
   select(state, county, population, starts_with("income")) %>%
   
 counties %>% 
-  select(state, county, population, countains("state")) %>%
+  select(state, county, population, countains("at")) %>%
 
 ```
+27/08/2022
+THE RENAME VERB
+1) Renaming a column after count
+
+```{r}
+#install.packages("tidyverse")
+library(readr)
+library(tidyverse)
+library(dplyr)
+counties <- read.csv("counties.csv")
+glimpse(counties) #una vista previa como estan los datos.
+
+counties %>% 
+  count(state) %>%  #devuelve una columna n con el conteo por estado en este caso.
+  rename(num_conties = n) #renombre la variable n ahora con num_conties
+
+#otro ejemplo usando el select()
+counties %>% 
+  select(state, county, poverty_rate = poverty)
+```
+2) Using transmute, 
+```{r}
+counties <- read.csv("counties.csv")
+glimpse(counties) #una vista previa como estan los datos.
+
+counties
+
+counties %>% 
+  transmute(state, county, population, density=population/land_area) %>% 
+  filter(population >= 1000000) %>% 
+  arrange(desc(density))
+```
+CHOOSING AMONG THE FOUR VERBS
+```{r}
+#Change the name of the unemployment column
+counties %>% 
+  rename(unemployement_rate=unemployment)
+#Keep the state and county columns, and the columns containing poverty
+counties %>% 
+  select(state, county, contains("poverty"))
+#Calculate the fraction_woman column without dropping the other columns
+counties %>% 
+  mutate(fraction_woman=women/population) #se presentan todas las columnas mas la que se agrega
+#Keep only the state, county, anda employment_rate columns
+counties %>% 
+  transmute(state, county, employment_rate=employed/population) #muestra las columnas filtrando y la nueva.
+```
+Joining parts and part categories
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

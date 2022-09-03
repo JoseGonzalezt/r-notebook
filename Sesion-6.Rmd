@@ -67,11 +67,11 @@ ggplot(by_continent, aes(x=continent, y=medianGdpPercap)) +
 Visualizing GDP per capita by country in Oceania
 ```{r}
 
-oceania_1952 <- gapminder %>% 
-  filter(continent == "Oceania", year == 1952)
-oceania_1952
-ggplot(oceania_1952, aes(x=country, y=gdpPercap)) +
-  geom_col()
+  oceania_1952 <- gapminder %>% 
+    filter(continent == "Oceania", year == 1952)
+  oceania_1952
+  ggplot(oceania_1952, aes(x=country, y=gdpPercap)) +
+    geom_col()
 ```
 HISTOGRAMS
 Ver el nivel de frecuencia de una variable.
@@ -213,6 +213,9 @@ selected_counties %>%
   mutate(density=total_population/total_area) %>% 
   arrange(desc(density))
 
+selected_counties <- counties %>% 
+selected_counties %>% 
+  group_by(state) %>% 
 ```
 ```{r}
 selected_counties <- counties %>% 

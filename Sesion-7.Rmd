@@ -78,6 +78,7 @@ star_destroyer <- inventory_parts_joined %>%
 millenium_falcon %>% 
   left_join(star_destroyer, by=c("part_num", "color_id"), suffix=c("_falcon","_star_destroyer"))
 ```
+
 Left joinin two sets by color
 ```{r}
 millenium_falcon_color <- millenium_falcon %>% 
